@@ -8,11 +8,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 描述：
+ * 描述：CSV工具类
  *
  * @author Fang
  * @date 2021-03-22 15:34:47
@@ -32,7 +33,7 @@ public class CSVWriterUtils {
             String filePath = savePath + fileName;
             FileOutputStream fos = new FileOutputStream(filePath);
             OutputStreamWriter out = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
-            CSVWriter writer = new CSVWriter(out);
+            CSVWriter writer = new CSVWriter(out,CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.RFC4180_LINE_END);
 
             writer.writeAll(getCsvContent(employee));
             writer.close();
@@ -56,18 +57,18 @@ public class CSVWriterUtils {
     }
 
     private static String[] writeContent(Employee employee) {
-        String[] content = new String[]{
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return new String[]{
                 employee.getId(),
                 employee.getName(),
                 String.valueOf(employee.getAge()),
                 employee.getDepartment(),
                 String.valueOf(employee.getSalary()),
                 employee.getCreateBy(),
-                String.valueOf(employee.getCreateTime()),
+                sdf.format(employee.getCreateTime()),
                 employee.getUpdateBy(),
-                String.valueOf(employee.getUpdateTime())
+                sdf.format(employee.getUpdateTime())
         };
-        return content;
     }
 
     private static String[] writeTitle() {
